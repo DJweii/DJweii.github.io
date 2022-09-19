@@ -16,21 +16,23 @@
   <meta name="author" content="DJweii">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="Bean的生命周期 1. 实例化bean：反射的方式生成对象2. 填充bean的属性：populateBean(),循环依赖的问题（三级缓存）3. 调用aware接口相关的方法：invokeAwareMethod（完成BeanName,BeanFactory,BeanClassLoader对象的属性设置）4. 调用BeanPostProcessor中的前置处理方法：使用比较多的有（Applicat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello">
-<meta property="og:url" content="https://djweii.github.io/2022/09/18/hello-world/index.html">
+<meta property="og:title" content="Bean的生命周期">
+<meta property="og:url" content="https://djweii.github.io/2022/09/19/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
 <meta property="og:site_name" content="DJweii">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="Bean的生命周期 1. 实例化bean：反射的方式生成对象2. 填充bean的属性：populateBean(),循环依赖的问题（三级缓存）3. 调用aware接口相关的方法：invokeAwareMethod（完成BeanName,BeanFactory,BeanClassLoader对象的属性设置）4. 调用BeanPostProcessor中的前置处理方法：使用比较多的有（Applicat">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-09-18T09:24:13.750Z">
-<meta property="article:modified_time" content="2022-09-19T05:06:25.700Z">
+<meta property="og:image" content="c:\Users\victory\AppData\Roaming\Typora\typora-user-images\image-20220919112913694.png">
+<meta property="article:published_time" content="2022-09-19T05:02:08.364Z">
+<meta property="article:modified_time" content="2022-09-19T05:07:18.215Z">
 <meta property="article:author" content="DJweii">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:\Users\victory\AppData\Roaming\Typora\typora-user-images\image-20220919112913694.png">
   
   
   
-  <title>Hello - DJweii</title>
+  <title>Bean的生命周期 - DJweii</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -195,7 +197,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello"></span>
+            <span id="subtitle" data-typed-text="Bean的生命周期"></span>
           
         </div>
 
@@ -206,8 +208,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-09-18 17:24" pubdate>
-          2022年9月18日 下午
+        <time datetime="2022-09-19 13:02" pubdate>
+          2022年9月19日 下午
         </time>
       </span>
     
@@ -218,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          367 字
+          540 字
         
       </span>
     
@@ -229,7 +231,7 @@
         
         
         
-          4 分钟
+          5 分钟
         
       </span>
     
@@ -267,25 +269,13 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Hello</h1>
+            <h1 style="display: none">Bean的生命周期</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+                <h1 id="Bean的生命周期"><a href="#Bean的生命周期" class="headerlink" title="Bean的生命周期"></a>Bean的生命周期</h1><p><img src="C:\Users\victory\AppData\Roaming\Typora\typora-user-images\image-20220919112913694.png" srcset="/img/loading.gif" lazyload alt="image-20220919112913694"></p>
+<h2 id="1-实例化bean：反射的方式生成对象"><a href="#1-实例化bean：反射的方式生成对象" class="headerlink" title="1. 实例化bean：反射的方式生成对象"></a>1. 实例化bean：反射的方式生成对象</h2><h2 id="2-填充bean的属性：populateBean-循环依赖的问题（三级缓存）"><a href="#2-填充bean的属性：populateBean-循环依赖的问题（三级缓存）" class="headerlink" title="2. 填充bean的属性：populateBean(),循环依赖的问题（三级缓存）"></a>2. 填充bean的属性：populateBean(),循环依赖的问题（三级缓存）</h2><h2 id="3-调用aware接口相关的方法：invokeAwareMethod（完成BeanName-BeanFactory-BeanClassLoader对象的属性设置）"><a href="#3-调用aware接口相关的方法：invokeAwareMethod（完成BeanName-BeanFactory-BeanClassLoader对象的属性设置）" class="headerlink" title="3. 调用aware接口相关的方法：invokeAwareMethod（完成BeanName,BeanFactory,BeanClassLoader对象的属性设置）"></a>3. 调用aware接口相关的方法：invokeAwareMethod（完成BeanName,BeanFactory,BeanClassLoader对象的属性设置）</h2><h2 id="4-调用BeanPostProcessor中的前置处理方法：使用比较多的有（ApplicationContextPostProcessor-设置ApplicationContext-Evironment-ResourceLoader-EmbeddValueResolver等对象）"><a href="#4-调用BeanPostProcessor中的前置处理方法：使用比较多的有（ApplicationContextPostProcessor-设置ApplicationContext-Evironment-ResourceLoader-EmbeddValueResolver等对象）" class="headerlink" title="4. 调用BeanPostProcessor中的前置处理方法：使用比较多的有（ApplicationContextPostProcessor,设置ApplicationContext,Evironment,ResourceLoader,EmbeddValueResolver等对象）"></a>4. 调用BeanPostProcessor中的前置处理方法：使用比较多的有（ApplicationContextPostProcessor,设置ApplicationContext,Evironment,ResourceLoader,EmbeddValueResolver等对象）</h2><h2 id="5-调用initmethod方法：-invokeinitmethod-判断是否实现了initializingBean接口，如果有，调用afterPropertiesSet方法，没有就不调用"><a href="#5-调用initmethod方法：-invokeinitmethod-判断是否实现了initializingBean接口，如果有，调用afterPropertiesSet方法，没有就不调用" class="headerlink" title="5. 调用initmethod方法：  invokeinitmethod(),判断是否实现了initializingBean接口，如果有，调用afterPropertiesSet方法，没有就不调用"></a>5. 调用initmethod方法：  invokeinitmethod(),判断是否实现了initializingBean接口，如果有，调用afterPropertiesSet方法，没有就不调用</h2><h2 id="6-调用BeanPostProcessor的后置处理方法：spring的aop就是在此处实现的，AbstractAutoProxyCreator"><a href="#6-调用BeanPostProcessor的后置处理方法：spring的aop就是在此处实现的，AbstractAutoProxyCreator" class="headerlink" title="6. 调用BeanPostProcessor的后置处理方法：spring的aop就是在此处实现的，AbstractAutoProxyCreator"></a>6. 调用BeanPostProcessor的后置处理方法：spring的aop就是在此处实现的，AbstractAutoProxyCreator</h2><h2 id="7-获取到完整的对象，可以通过getBean的方式来进行对象的获取"><a href="#7-获取到完整的对象，可以通过getBean的方式来进行对象的获取" class="headerlink" title="7. 获取到完整的对象，可以通过getBean的方式来进行对象的获取"></a>7. 获取到完整的对象，可以通过getBean的方式来进行对象的获取</h2><h2 id="8-销毁流程，1、判断是否实现了DispoableBean接口，2、调用destroyMethod方法"><a href="#8-销毁流程，1、判断是否实现了DispoableBean接口，2、调用destroyMethod方法" class="headerlink" title="8. 销毁流程，1、判断是否实现了DispoableBean接口，2、调用destroyMethod方法"></a>8. 销毁流程，1、判断是否实现了DispoableBean接口，2、调用destroyMethod方法</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2>
                 
               </div>
             
@@ -302,8 +292,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello</div>
-      <div>https://djweii.github.io/2022/09/18/hello-world/</div>
+      <div>Bean的生命周期</div>
+      <div>https://djweii.github.io/2022/09/19/Bean的生命周期/</div>
     </div>
     <div class="license-meta">
       
@@ -315,7 +305,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年9月18日</div>
+          <div>2022年9月19日</div>
         </div>
       
       
@@ -347,15 +337,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/09/19/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="Bean的生命周期">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Bean的生命周期</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2022/09/18/hello-world/" title="Hello">
+                        <span class="hidden-mobile">Hello</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
