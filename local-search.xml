@@ -5,10 +5,35 @@
   
   <entry>
     <title>SpringIOC的理解，原理与实现</title>
+    <link href="/2022/08/01/GC%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/"/>
+    <url>/2022/08/01/GC%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</url>
+    
+    <content type="html"><![CDATA[<p><img src="https://djwweii-img.oss-cn-hangzhou.aliyuncs.com/img/image-20220920104202201.png" alt="image-20220920104202201"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>JVM</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>GC</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>SpringIOC的理解，原理与实现</title>
     <link href="/2022/07/30/SpringIOC/"/>
     <url>/2022/07/30/SpringIOC/</url>
     
-    <content type="html"><![CDATA[<h1 id="谈谈SpringIOC的理解，原理与实现"><a href="#谈谈SpringIOC的理解，原理与实现" class="headerlink" title="谈谈SpringIOC的理解，原理与实现"></a>谈谈SpringIOC的理解，原理与实现</h1><h2 id="总："><a href="#总：" class="headerlink" title="总："></a>总：</h2><h3 id="控制反转："><a href="#控制反转：" class="headerlink" title="控制反转："></a>控制反转：</h3><p>​理论思想，原来的对象是由使用者来进行控制，有了spring之后，可以把整个对象交给spring来帮我们进行管理</p><h3 id="DI："><a href="#DI：" class="headerlink" title="DI："></a>DI：</h3><p>​依赖注入，把对应的属性的值注入到具体的对象中，@Autowired,populateBean完成属性值的注入</p><h3 id="容器："><a href="#容器：" class="headerlink" title="容器："></a>容器：</h3><p>​存储对象，使用map结构来存储，在spring中一般存在三级缓存，singletonObjects存放完整的bean对象，整个bean的生命周期，从创建到使用到摧毁的过程全部都是由容器来管理（bean的生命周期）</p><h2 id="面试说法："><a href="#面试说法：" class="headerlink" title="面试说法："></a>面试说法：</h2><p>​具体的细节我记不太清了，但是spring中的bean都是通过反射的方式生成的，同时其中包含了很多的扩展点，比如最常用的对BeanFactory的扩展，对bean的扩展（对占位符的处理），除此之外，ioc中最核心的也就是填充具体bean属性，和生命周期（背一下）。</p><h2 id="spring-IOC的底层实现"><a href="#spring-IOC的底层实现" class="headerlink" title="spring IOC的底层实现"></a>spring IOC的底层实现</h2><p>底层实现：工作原理，过程，数据结构，流程，设计模式，设计思想</p><p>你对他的理解和你了解过的实现过程</p><p>反射，工厂，设计模式（会的说，不会的不说），关键的几个方法</p><p>createBeanFactory,getBean,doGetBean,createBean,doCreateBean,createBeanInstannce,populateBean,initializingBean</p><p>1、先通过createBeanFactory创建出一个Bean工厂（DefaultListableBeanFactory）</p><p>2、开始循环创建对象，因为容器中的bean默认都是单例的，所以优先通过getBean，doGetBean从容器中查找，找不到的话，</p><p>3、通过createBean,doCreateBean方法，以反射的反射创建对象，一般情况下使用的是无参的构造方法（getDeclareConstructor,newInstance）</p><p>4、进行对象的属性填充populateBean</p><p>5、进行其他的初始化操作（initializingBean）</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="谈谈SpringIOC的理解，原理与实现"><a href="#谈谈SpringIOC的理解，原理与实现" class="headerlink" title="谈谈SpringIOC的理解，原理与实现"></a>谈谈SpringIOC的理解，原理与实现</h1><p>Spring 通过 IoC 容器来管理所有 Java 对象的实例化和初始化，控制对象与对象之间的依赖关系。我们将由 IoC 容器管理的 Java 对象称为 Spring Bean，它与使用关键字 new 创建的 Java 对象没有任何区别。</p><p>IoC 利用 Java 的反射机制，根据类名生成相应的对象（即 Spring Bean），并根据依赖关系将这个对象注入到依赖它的对象中。</p><h2 id="总："><a href="#总：" class="headerlink" title="总："></a>总：</h2><h3 id="控制反转（一种设计思想，优点：松耦合）："><a href="#控制反转（一种设计思想，优点：松耦合）：" class="headerlink" title="控制反转（一种设计思想，优点：松耦合）："></a>控制反转（一种设计思想，优点：松耦合）：</h3><p>​理论思想，原来的对象是由使用者来进行控制，有了spring之后，可以把整个对象交给spring来帮我们进行管理</p><h3 id="DI："><a href="#DI：" class="headerlink" title="DI："></a>DI：</h3><p>​依赖注入，把对应的属性的值注入到具体的对象中，@Autowired,populateBean完成属性值的注入</p><h3 id="容器："><a href="#容器：" class="headerlink" title="容器："></a>容器：</h3><p>​存储对象，使用map结构来存储，在spring中一般存在三级缓存，singletonObjects存放完整的bean对象，整个bean的生命周期，从创建到使用到摧毁的过程全部都是由容器来管理（bean的生命周期）</p><h2 id="面试说法："><a href="#面试说法：" class="headerlink" title="面试说法："></a>面试说法：</h2><p>​具体的细节我记不太清了，但是spring中的bean都是通过反射的方式生成的，同时其中包含了很多的扩展点，比如最常用的对BeanFactory的扩展，对bean的扩展（对占位符的处理），除此之外，ioc中最核心的也就是填充具体bean属性，和生命周期（背一下）。</p><h2 id="spring-IOC的底层实现"><a href="#spring-IOC的底层实现" class="headerlink" title="spring IOC的底层实现"></a>spring IOC的底层实现</h2><p>底层实现：工作原理，过程，数据结构，流程，设计模式，设计思想</p><p>你对他的理解和你了解过的实现过程</p><p>反射，工厂，设计模式（会的说，不会的不说），关键的几个方法</p><p>createBeanFactory,getBean,doGetBean,createBean,doCreateBean,createBeanInstannce,populateBean,initializingBean</p><p>1、先通过createBeanFactory创建出一个Bean工厂（DefaultListableBeanFactory）</p><p>2、开始循环创建对象，因为容器中的bean默认都是单例的，所以优先通过getBean，doGetBean从容器中查找，找不到的话，</p><p>3、通过createBean,doCreateBean方法，以反射的反射创建对象，一般情况下使用的是无参的构造方法（getDeclareConstructor,newInstance）</p><p>4、进行对象的属性填充populateBean</p><p>5、进行其他的初始化操作（initializingBean）</p>]]></content>
     
     
     <categories>
@@ -71,6 +96,31 @@
     <tags>
       
       <tag>bean</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>服务启动参数</title>
+    <link href="/2022/07/15/%E6%A1%86%E6%9E%B6%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/"/>
+    <url>/2022/07/15/%E6%A1%86%E6%9E%B6%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/</url>
+    
+    <content type="html"><![CDATA[<hr><h1 id="Nacos"><a href="#Nacos" class="headerlink" title="Nacos"></a>Nacos</h1><p><code>/usr/loca/nacos</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /usr/local/nacos/bin<br><br>sh startup.sh -m standalone<br><br>======== or  ======== <span class="hljs-comment"># 使用脚本启动</span><br><span class="hljs-built_in">cd</span> /usr/local/nacos<br><br>sh nacos.sh start<br></code></pre></td></tr></table></figure><h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a><strong>访问</strong></h2><p><a href="http://192.168.33.135:8848/nacos">http://192.168.33.135:8848/nacos</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>指令</tag>
       
     </tags>
     
